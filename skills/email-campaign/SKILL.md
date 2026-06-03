@@ -137,6 +137,8 @@ Only now touch the MCP:
 
 1. **Discover** the connected CLM (search tools for klaviyo, mailchimp, hubspot, sendgrid,
    customer.io, …). If none is connected, deliver the HTML files + a copy/paste setup checklist, and stop.
+   **If the CLM is Klaviyo, read `references/klaviyo.md` (in this skill's directory) and follow its
+   concrete object model + steps** — it's the provider-specific expansion of the generic steps below.
 2. **Resolve audience** — list existing lists/segments; have the user pick, or create the segment
    from the brief's condition if supported. Confirm the match.
 3. **Create content** — create each email/template with its HTML, subject, preview, sender identity.
