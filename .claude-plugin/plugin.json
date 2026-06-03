@@ -1,0 +1,23 @@
+{
+  "name": "email-marketing",
+  "description": "End-to-end email marketing: intake a brief, decide one-shot vs. journey, design on-brand emails, sharpen copy, and push drafts into the connected email CLM (Klaviyo, Mailchimp, HubSpot, or any email MCP). Tool-agnostic over the CLM; never auto-sends.",
+  "version": "1.0.0",
+  "author": {
+    "name": "jayaNTCH1797",
+    "url": "https://github.com/jayaNTCH1797"
+  },
+  "homepage": "https://github.com/jayaNTCH1797/email-marketing-skill",
+  "repository": "https://github.com/jayaNTCH1797/email-marketing-skill",
+  "license": "MIT",
+  "keywords": [
+    "email",
+    "email-marketing",
+    "campaign",
+    "klaviyo",
+    "mailchimp",
+    "hubspot",
+    "drip",
+    "journey",
+    "newsletter"
+  ]
+}

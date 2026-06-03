@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "(?i)(send|broadcast|schedule|activate|publish|deliver).*(email|campaign|flow|message|blast|broadcast)|(email|campaign|flow|message).*(send|broadcast|schedule|activate|publish|deliver)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"ask\",\"permissionDecisionReason\":\"email-marketing send-guard: this looks like a send/activate action. Confirm the exact audience and recipient count before proceeding.\"}}'"
+          }
+        ]
+      }
+    ]
+  }
+}

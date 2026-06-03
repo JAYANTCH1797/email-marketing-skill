@@ -1,0 +1,18 @@
+{
+  "name": "email-marketing-marketplace",
+  "description": "Email marketing tooling for Claude — the end-to-end email-marketing plugin (brief → design → copy → drafts in your CLM).",
+  "owner": {
+    "name": "jayaNTCH1797",
+    "url": "https://github.com/jayaNTCH1797"
+  },
+  "metadata": {
+    "description": "Email marketing tooling for Claude — the end-to-end email-marketing plugin (brief → design → copy → drafts in your CLM)."
+  },
+  "plugins": [
+    {
+      "name": "email-marketing",
+      "source": "./",
+      "description": "End-to-end email marketing: brief → one-shot/journey → on-brand design → copy → drafts in your CLM (Klaviyo, Mailchimp, HubSpot). Tool-agnostic; never auto-sends."
+    }
+  ]
+}
