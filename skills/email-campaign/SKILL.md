@@ -112,16 +112,23 @@ exit/suppression rules — but do **not** create or query the CLM yet. Note "res
 
 ### Phase 5 — Design each email
 
-Build the emails **one at a time**, in order. For each:
+Structure first, build second. Work the emails in order, and within each email follow this sub-order:
 
-1. Invoke the **`email-templates`** skill with: the brand URL (→ brand kit), the use case/recipe,
-   and this email's subject/headline/CTA/offer from the brief. It returns production HTML and
-   resolves the brand kit once (installed design-system skill → `brand-kit-extractor` agent → ask).
-2. Reuse the same brand kit across all emails in a journey — derive it once.
+**5a. Blueprint (before any image or HTML).** Via the **`email-templates`** skill (Step 2.5), produce
+the per-email blueprint: section content map, **hero-text strategy** (bake text into image / live HTML
+text over a plain image / no overlay), per-slot image plan, a **dedup check** (hero text ≠ body text),
+and a **readability spec** for any text-on-image. For a journey, blueprint all emails together and check
+**no two reuse the same hero headline or treatment.**
+→ **Gate:** review the blueprint(s) with the user and get sign-off. Do not proceed until approved.
 
-If `email-templates` isn't installed, fall back to Outlook-safe, inline-CSS, 600px table HTML, and say so.
+**5b. Images.** Only after blueprint approval, run the image pipeline (Step 6) — invoke the installed
+**image-generation skill** with the brand kit + the chosen hero mode/spec. Generate after copy is locked
+so baked text matches the final headline. Reuse one brand kit across the whole journey.
 
-→ **Gate:** show each email (or a batch) for approval. Nothing reaches the CLM yet.
+**5c. Build HTML.** Via `email-templates`, produce the production HTML using the approved blueprint and
+images. (If `email-templates` isn't installed, fall back to Outlook-safe, inline-CSS, 600px table HTML, and say so.)
+
+→ **Gate:** show each finished email (or a batch) for approval. Nothing reaches the CLM yet.
 
 ### Phase 6 — Sharpen the copy
 

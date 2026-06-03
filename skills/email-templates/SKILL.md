@@ -44,18 +44,78 @@ the brand font only in the Outlook fallback stack.
 Everything downstream reads from this brand kit. The named fonts/colors in the recipes are
 **genre fallbacks** for tokens the kit doesn't pin down — the brand kit always wins.
 
-## Step 2 — Classify the use case
+## Step 2 — Classify the use case (each type carries an image pipeline)
 
-| Campaign type / description | Recipe | Hero mode |
-|---|---|---|
-| sale, flash sale, promotional, ecommerce discount | **Ecommerce Hero** | overlay-text |
-| product launch, feature announcement (software/tech) | **SaaS Launch** | illustration |
-| smart ring, wearable, device / gadget launch | **Consumer Hardware** | overlay-text photo |
-| protein, supplement, nutrition, wellness D2C | **D2C Supplement** | overlay-text photo |
-| order confirmation, receipt, shipping, account email | **Transactional** | none |
-| welcome, newsletter, general, anything else | **Default Editorial** | standard-photo |
+Pick the type. Each one comes with a default **image pipeline** — what imagery it needs and how the
+hero is built. This is a contract, not a suggestion: it drives Step 2.5 and Step 6.
+
+| Campaign type / description | Recipe | Needs hero | Default hero mode | Lifestyle imgs | Max images |
+|---|---|---|---|---|---|
+| sale, flash sale, promotional, ecommerce discount | **Ecommerce Hero** | yes | `overlay-text` | yes | 3 |
+| product launch, feature announcement (software/tech) | **SaaS Launch** | yes | `illustration` | no | 1 |
+| smart ring, wearable, device / gadget launch | **Consumer Hardware** | yes | `overlay-text` | no | 1 |
+| protein, supplement, nutrition, wellness D2C | **D2C Supplement** | yes | `overlay-text` | yes | 1–3 |
+| order confirmation, receipt, shipping, account email | **Transactional** | **no** | `none` | no | 0 |
+| welcome, newsletter, general, anything else | **Default Editorial** | yes | `standard-photo` | no | 1 |
 
 When unsure, use **Default Editorial**.
+
+### Hero mode glossary
+
+- **`overlay-text`** — headline is **baked onto the image** (the image + type are one art-directed asset). Best for D2C/ecommerce/fashion lifestyle, where generated imagery shines. Requires the readability discipline in Step 2.5.
+- **`standard-photo`** — clean photo, **no text on it**; the headline is live HTML below/over it.
+- **`illustration`** — flat illustration or UI mockup, **no photography/people** (SaaS/tech).
+- **`none`** — no hero image; the hero is built in HTML/CSS (transactional).
+
+The default hero mode is a starting point — the **blueprint (Step 2.5)** can override it (e.g. switch
+`overlay-text` → `standard-photo` for accessibility/localization). Decide there, with the user, before building.
+
+## Step 2.5 — Email blueprint (decide & review BEFORE you build)
+
+**Do not generate any image or write any HTML until this blueprint is approved by the user.**
+Structure first; build second. This is what prevents the two classic failures: the hero headline
+**repeating** body copy, and **unreadable text** dropped onto a busy image.
+
+Produce this blueprint and get a thumbs-up:
+
+```
+EMAIL BLUEPRINT — {email name}
+  Type / recipe:   {from Step 2}
+  Section map:     (each section = ONE job; no text appears in two places)
+    1. Header      — logo
+    2. Hero        — {headline text} · {hero mode: overlay-text | standard-photo | none}
+    3. {sub/body}  — {what copy lives here — must NOT restate the hero headline}
+    4. {grid/feature/benefits} — {…}
+    5. CTA         — {button text} → {destination}
+    6. Footer      — unsubscribe + address
+  Hero strategy:   {A | B | C — see decision tree}
+  Image plan:      per slot → source + spec (see below)
+  Dedup check:     {confirm hero text ≠ any body text}
+  Readability:     {for baked/overlay text: zone, scrim, max words, min size}
+```
+
+### Hero-text strategy — pick ONE (this is the decision the user must see)
+
+| | Strategy | How text is handled | Use when | Cost / risk |
+|---|---|---|---|---|
+| **A** | **Bake text into the image** (`overlay-text`) | Headline is rendered INTO the generated image by the image-gen skill | Art-directed D2C/fashion/ecommerce lifestyle; you control generation | Not editable/translatable, not selectable text, must verify legibility; **no `<h1>` repeating it in HTML** |
+| **B** | **Live HTML text over a plain image** | Image generated/uploaded with a deliberate **empty safe-zone + dark scrim**; HTML places the headline as real text on top | Need accessibility, localization, editable copy, or a brand-provided photo | Image must be prompted/chosen with negative space + contrast; align text to the safe-zone on mobile too |
+| **C** | **No overlay** (`standard-photo`) | Clean image; headline is HTML **below** it | Safest default; best deliverability + accessibility | Less "campaign-y" punch |
+
+Rules that fall out of this:
+- **Lock the content first.** Decide the headline and every body line in the section map *before*
+  choosing A/B/C — so the hero never duplicates the body, and (for A) the baked text matches final copy.
+- **A and B both require a readability spec:** text zone (e.g. lower-third / centered), a contrast
+  scrim or gradient over the image, max headline length (≤8 words), and a minimum legible size.
+- **If in doubt, choose C.** Only use A when the image is generated (so composition is controllable)
+  and the copy is final.
+
+### Cross-email check (journeys)
+
+For a sequence, the blueprint set must be reviewed together: **no two emails reuse the same hero
+headline or the same hero image treatment.** Vary the angle per email.
+
+→ **Gate:** present the blueprint(s). Only after approval proceed to Step 6 (images) then build the HTML.
 
 ## Step 3 — Universal quality baseline (ALWAYS apply, reading from the brand kit)
 
@@ -190,16 +250,34 @@ Catch-all: newsletters, welcome, announcements. 640px. Clean editorial photo, NO
 - **Type (fallback):** serif brands → Lora; tech/modern → DM Sans / Space Grotesk. H1 40–48px, body 15–16px/1.6.
 - **Color:** brand primary for header bg + CTA. Content white or `#FAFAFA`. Footer medium-dark. Minimal decoration.
 
-## Step 6 — Hero & lifestyle images
+## Step 6 — Image pipeline (only after the blueprint is approved)
 
-For every recipe except Transactional, you need imagery. Two sources, in order:
-1. **Brand-provided asset** — if the brief includes a product/hero image URL, use it directly.
-2. **Generate it** — otherwise invoke the companion image-generation skill with the **brand kit**
-   (colors, mood, imagery style) + the recipe's hero mode (`overlay-text` / `standard-photo` /
-   `illustration`). Specify lighting, mood, and text-overlay zone. Insert the returned URL with alt text.
+For every recipe except Transactional you need imagery. **Generate only after Step 2.5 is signed off** —
+the hero strategy and final copy must be locked first (so baked text matches and nothing is repeated).
+
+Two sources, in order:
+1. **Brand-provided asset** — if the brief includes a product/hero image URL, use it directly (and, for
+   strategy B, confirm it has a usable text safe-zone; if not, add a scrim in the HTML or fall back to C).
+2. **Generate it** — invoke your installed **image-generation skill** (e.g. `image-gen`, or a
+   creative-designer skill for art-directed baked-text heroes). Pass the **brand kit** (palette, mood,
+   imagery style) plus a per-mode spec:
+
+| Hero strategy / mode | What to tell the image skill |
+|---|---|
+| **A · `overlay-text`** (bake text in) | The exact final headline to render IN the image (≤8 words), its placement (e.g. lower-third), and a contrast treatment (dark gradient/scrim behind the text). Subject, lighting, mood from the brand kit. **Verify the returned image is legible** before using; if not, regenerate or switch to B. |
+| **B · `standard-photo` + HTML overlay** | Generate WITHOUT any text, but compose with **negative space + a darker region** where the HTML headline will sit. Then place live text over that zone with a CSS scrim. |
+| **C · `standard-photo`** (no overlay) | Clean image, no text, no reserved zone — headline goes in HTML below. |
+| **`illustration`** | Flat illustration / UI mockup, no photography, no people (SaaS/tech). |
+
+Notes:
+- **Lifestyle generation is strongest for D2C / ecommerce** — product-in-context shots. For SaaS use
+  illustration; for transactional, generate nothing.
+- Respect the type's **max images** from Step 2. Insert every image with descriptive **alt text**.
+- For strategy A, the HTML must **not** contain an `<h1>` repeating the baked headline (see self-check).
 
 ## Step 7 — Self-check before delivering
 
+- [ ] Blueprint (Step 2.5) was approved before any image/HTML, hero strategy (A/B/C) chosen, dedup + readability confirmed?
 - [ ] Brand kit resolved (design-system skill → brand-kit-extractor → fallback) and colors/fonts/logo come from it?
 - [ ] Licensed brand fonts mapped to the closest Google Font for the `@import`?
 - [ ] Correct recipe chosen and applied on top of the baseline?
