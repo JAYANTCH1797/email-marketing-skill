@@ -35,17 +35,63 @@ connected (Klaviyo, Mailchimp, HubSpot, or any email MCP). Tool-agnostic over th
 - An **image-generation** skill for hero/lifestyle/illustration assets.
 - A per-brand **design-system** skill if you have one (optional — scraping is the fallback).
 
-## Install / test locally
+## Install
+
+**From this GitHub marketplace (recommended):**
+
+```
+/plugin marketplace add jayaNTCH1797/email-marketing-skill
+/plugin install email-marketing
+```
+
+**From a local checkout (for development):**
 
 ```bash
 # from the directory containing this plugin folder
 claude --plugin-dir ./email-marketing
-# (v2.1.128+ also accepts a .zip directly)
+# (v2.1.128+ also accepts a .zip directly: claude --plugin-dir ./email-marketing.zip)
 ```
+
+Validate the manifests any time with:
+
+```bash
+claude plugin validate ./email-marketing
+```
+
+## Quickstart
+
+Once installed, start from the command — or just describe what you want:
+
+```
+/email-campaign welcome series for gruns.co with a 10% first-order offer
+```
+
+The **email-campaign** skill drives the flow:
+
+1. **Intake** — answers a few questions (or reads your brief). For a single email you just want
+   *designed* (not delivered), it offers a fast path straight to **email-templates**.
+2. **One-shot vs. journey** — single broadcast, or a triggered multi-email sequence.
+3. **Brief** — a short written brief you approve.
+4. **Structure** — the one-shot plan or the full journey map (sign-off gate).
+5. **Design** — each email built on-brand via **email-templates** (brand kit resolved by the
+   **brand-kit-extractor** agent, or an installed `*-design-system` skill).
+6. **Copy** — the **copy-critic** agent tightens copy and proposes subject A/B variants.
+7. **Deliver** — drafts created in your connected CLM (Klaviyo / Mailchimp / HubSpot / any email MCP).
+
+Nothing is ever sent automatically — Phase 7 produces **drafts / paused flows** only.
+
+## Connect your email CLM
+
+Delivery (Phase 7) uses whatever email MCP you've connected — the plugin detects it and maps
+generic concepts (audience, email, one-shot, journey, trigger) onto that tool's primitives. Connect
+your Klaviyo / Mailchimp / HubSpot MCP separately; this plugin doesn't bundle credentials.
+
+After connecting, **tune the send-guard** in `hooks/hooks.json` to match your CLM's exact send/
+activate tool names so the confirmation prompt fires precisely.
 
 ## Distribute
 
-Zip the `email-marketing/` folder, or push to GitHub and list it in a marketplace
+Zip the `email-marketing/` folder, or push to GitHub and install via the marketplace
 (`.claude-plugin/marketplace.json`).
 
 Repo: https://github.com/jayaNTCH1797/email-marketing-skill
