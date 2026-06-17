@@ -76,11 +76,21 @@ The default hero mode is a starting point — the **blueprint (Step 2.5)** can o
 Structure first; build second. This is what prevents the two classic failures: the hero headline
 **repeating** body copy, and **unreadable text** dropped onto a busy image.
 
+### Pick the hero archetype first
+
+Read **`references/layout-patterns.md`** (in this skill's directory — the researched archetype library). Then:
+1. **Auto-pick** the starting archetype from the **Genre → default archetype map** for this brand's genre + use case.
+2. **Confirm or override** with the user — present it as a *named* choice with a one-line description and the 2–3 alternates from that row (full menu if they ask). E.g. "Hero = `text-over-image` (photo with overlaid headline + CTA below); alternates `product-cutout`, `color-block`." This is the natural spot for an `AskUserQuestion`.
+3. **Research fallback:** if nothing in the menu genuinely fits (a genre/treatment the library doesn't cover), invoke the **`email-structure-researcher`** agent to derive a structure, review it with the user, and **append it to `references/layout-patterns.md`** so it's reused next time.
+
+The chosen archetype fixes the hero's image strategy and text-handling (below). Apply the reference's **Build & image guardrails** to every image — no exceptions.
+
 Produce this blueprint and get a thumbs-up:
 
 ```
 EMAIL BLUEPRINT — {email name}
   Type / recipe:   {from Step 2}
+  Hero archetype:  {key from layout-patterns.md, e.g. text-over-image}
   Section map:     (each section = ONE job; no text appears in two places)
     1. Header      — logo
     2. Hero        — {headline text} · {hero mode: overlay-text | standard-photo | none}
@@ -94,7 +104,10 @@ EMAIL BLUEPRINT — {email name}
   Readability:     {for baked/overlay text: zone, scrim, max words, min size}
 ```
 
-### Hero-text strategy — pick ONE (this is the decision the user must see)
+### Hero-text handling (for any image-bearing archetype) — pick ONE
+
+This is the *text* axis of the chosen archetype (e.g. `text-over-image` → A or B; `image-only` → C;
+`baked-art` → A). It's the readability decision the user must see:
 
 | | Strategy | How text is handled | Use when | Cost / risk |
 |---|---|---|---|---|
