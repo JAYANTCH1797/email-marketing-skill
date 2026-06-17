@@ -4,9 +4,13 @@ Concrete steps for delivering into **Klaviyo** when it's the connected CLM. This
 provider-specific expansion of the email-campaign skill's Phase 7. The generic Phase 7 rules still
 apply: **defer to the end, create drafts only, never send/activate without explicit go-ahead.**
 
-> Tool names below are described by **capability**, not exact MCP method names — Klaviyo MCP
-> servers vary. Inspect the connected server's schema and match by capability (list/segment read,
-> template create, campaign create, message-content set). Confirm before each create call.
+> **Real Klaviyo MCP tools** (confirm against the connected server's schema before each call):
+> - Audience: `get_lists`, `get_list`, `get_segments`, `get_segment`
+> - Templates: `list_email_templates`, `get_email_template`, `create_email_template`, `update_email_template`, `clone_email_template`, `create_dnd_email_template`, `render_email_template`
+> - Campaign: `create_campaign`, `assign_template_to_campaign_message`, `get_campaign(s)`
+> - Images: `upload_image_from_url` (host generated/edited images to get a stable URL)
+> - Profiles/metrics (for segments/flows): `get_profiles`, `get_metrics`, `get_flows`
+> There is **no send tool here** — sending is a separate send-job action; never trigger it from this skill.
 
 ## Klaviyo object model → our concepts
 
@@ -19,6 +23,17 @@ apply: **defer to the end, create drafts only, never send/activate without expli
 | Trigger | Flow **trigger** | Metric trigger or list/segment-join trigger. |
 | Personalization | `{{ first_name|default:'there' }}` | Django-style. Always give a `default:`. |
 | Sender | Account **sender** (verified from-address) | Must already be verified in the Klaviyo account; we don't create it. |
+
+## Reuse the brand's header/footer + host images (do this during design, before delivery)
+
+- **Header/footer:** call `list_email_templates`, then `get_email_template` on the brand's existing
+  campaigns and **lift the header (logo lockup, nav) and footer (social, legal/address, unsubscribe)**.
+  These are standardized per brand — reusing them keeps consistency and gets the legally-required footer
+  right. Build new ones from the brand kit only if no template exists. `clone_email_template` is the
+  fastest way to start from a known-good brand template and swap the body.
+- **Image hosting:** every generated/edited/user image must be a stable URL. `upload_image_from_url`
+  hosts it on Klaviyo's CDN and returns a durable link to drop into the `<img src>` — do this instead of
+  inlining base64 (Gmail clips >102KB).
 
 ## A. One-shot campaign
 

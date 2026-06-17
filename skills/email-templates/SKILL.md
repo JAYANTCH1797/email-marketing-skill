@@ -140,12 +140,21 @@ headline or the same hero image treatment.** Vary the angle per email.
 
 ### Color
 - Build the palette from the brand kit. Apply the **60-30-10 rule**: dominant (60%) + supporting (30%) + accent (10%).
-- Every section needs a clear background color — no unbroken walls of white.
+- **Content background defaults to WHITE** (`#ffffff`), or the design system's explicit white/surface token. **Do NOT default to cream/beige/warm tones.** If a brand or design-system skill exposes cream/warm tokens (e.g. Inito's `#f3f4ed` / `#faf6ef`), use them ONLY as *intentional accents* — an image frame, ONE alternating section, or the footer — never as the blanket content background. Overusing cream reads as a broken off-white, not a choice.
+- **Page / viewport background (outside the email) = light gray** (`#f4f4f5` / `#eeeeee`). White content card on a light-gray page is the rich-email web standard. Don't make the page white (card disappears) or cream.
+- Every section needs a clear background — but "clear" means white or an intentional brand block, not a wash of beige.
 - NEVER timid equally-distributed schemes or generic purple→blue gradients.
 
 ### Spatial composition
 - Generous padding: ≥48px vertical between sections, ≥24px horizontal.
 - ONE thing dominates each section. Vary rhythm (full-bleed / narrow / text-only).
+
+### Data points / stats (don't let them cram)
+A stats/data section is the most common cramped failure. Rules:
+- **Max 3 stats per row** on desktop, **2 (or 1) on mobile** — give each its own `<td>` with `≥16px` horizontal gutter and `≥24px` vertical padding. Use the `.col` class so they stack on mobile, never squeeze 4+ across.
+- Each stat = **big number (28–40px)** on its own line + **short label (13–14px)** below — never number and label crammed on one line.
+- For genuinely tabular data (specs, line items, order summary) use a **real `<table>`** with `≥12px` row padding, hairline (`1px`) dividers, labels left / values right-aligned — not squeezed inline text or pipe-separated runs.
+- If there are more than 6 data points, split into two rows or a 2-column label/value list — don't shrink type to fit.
 
 ### Visual quality
 - Full-width section backgrounds via `<table width="100%">` with `bgcolor` + inline `background-color`.
@@ -179,11 +188,12 @@ headline or the same hero image treatment.** Vary the angle per email.
     }
   </style>
 </head>
-<body style="margin:0;padding:0;background:#PAGE_BG;">
+<body style="margin:0;padding:0;background:#f4f4f5;">
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;">{PREVIEW_TEXT}</div>
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#PAGE_BG">
-    <tr><td align="center">
-      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
+  <!-- PAGE background = light gray (#f4f4f5). CONTENT card = white. -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f4f5" style="background:#f4f4f5;">
+    <tr><td align="center" style="padding:24px 0;">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="max-width:600px;width:100%;background:#ffffff;">
         <!-- sections go here -->
       </table>
     </td></tr>
@@ -191,6 +201,15 @@ headline or the same hero image treatment.** Vary the angle per email.
 </body>
 </html>
 ```
+Default the page to light gray and the content table to white. Only deviate (e.g. dark-native email)
+when the archetype/brand calls for it — and then keep page slightly darker than the card so the card reads.
+
+### Header & footer — reuse the brand's existing ones first
+Header and footer are usually standardized per brand and already exist in their email tool. **Before
+building either from scratch, check for an existing brand template in the connected CLM and lift its
+header + footer** (logo lockup, nav, social row, legal/address/unsubscribe). For Klaviyo this is
+`list_email_templates` → `get_email_template`; see `../email-campaign/references/klaviyo.md`. Only
+compose new ones from the brand kit when no existing template is available.
 
 ### Bulletproof button (Outlook-safe) — fill with the brand accent + brand button shape
 ```html
@@ -265,15 +284,32 @@ Catch-all: newsletters, welcome, announcements. 640px. Clean editorial photo, NO
 
 ## Step 6 — Image pipeline (only after the blueprint is approved)
 
-For every recipe except Transactional you need imagery. **Generate only after Step 2.5 is signed off** —
+For every recipe except Transactional you need imagery. **Source/generate only after Step 2.5 is signed off** —
 the hero strategy and final copy must be locked first (so baked text matches and nothing is repeated).
 
-Two sources, in order:
-1. **Brand-provided asset** — if the brief includes a product/hero image URL, use it directly (and, for
-   strategy B, confirm it has a usable text safe-zone; if not, add a scrim in the HTML or fall back to C).
-2. **Generate it** — invoke your installed **image-generation skill** (e.g. `image-gen`, or a
-   creative-designer skill for art-directed baked-text heroes). Pass the **brand kit** (palette, mood,
-   imagery style) plus a per-mode spec:
+### Where the image comes from (pick per slot)
+1. **User-provided / brand asset** — if the user uploaded images or the brief has a product/hero URL,
+   **prefer it** (real product/photography beats generated, and is mandatory for transactional, travel,
+   and fintech credibility). For overlay (strategy B), confirm it has a usable text safe-zone; if not, edit one in or fall back to C.
+2. **Generate it** — when there's no asset (common for D2C lifestyle, backgrounds, illustrations),
+   invoke your installed **image-generation skill** (e.g. `image-gen`, or a creative-designer skill for
+   art-directed baked-text heroes) with the **brand kit** + the per-mode spec below.
+3. **CSS-only** — `color-block` / `status-card` / `text-only` need no image at all.
+
+### Editing operations the pipeline may need
+A raw asset or generation often isn't email-ready. Apply (via the image skill or an editing step):
+- **Background removal / cutout** → for `product-cutout` (transparent PNG of the product).
+- **Bake a scrim/gradient** into the image → for any baked or overlaid text (don't rely on CSS overlays).
+- **Crop + resize to the slot** at **2× retina**, then **convert format** (webp/svg → png/jpg — see guardrails).
+- **Composite** product onto a brand-color tile; add a soft contact shadow so cutouts sit, not float.
+
+### Hosting (required)
+Every image — generated, edited, or user-uploaded — must end as a **stable HTTPS URL** in the `<img src>`.
+If a CLM is connected, host it there for a durable URL (Klaviyo: `upload_image_from_url`); otherwise use the
+brand's CDN URL. **Never inline large base64** images (Gmail 102KB clipping). 
+
+### Per-mode generation spec
+Pass the **brand kit** (palette, mood, imagery style) plus:
 
 | Hero strategy / mode | What to tell the image skill |
 |---|---|
@@ -296,6 +332,10 @@ Notes:
 - [ ] Correct recipe chosen and applied on top of the baseline?
 - [ ] Distinctive design font — no Inter/Roboto/Arial as the named font (except transactional)?
 - [ ] Intentional 60-30-10 palette; every section has a background?
+- [ ] Content card is WHITE (cream/beige only as intentional accent), page/viewport bg is light gray?
+- [ ] Any data/stats section is uncramped (≤3/row desktop, big number + label stacked, real table for tabular data)?
+- [ ] Header/footer reused from the brand's existing CLM template where one exists?
+- [ ] Every image is a hosted HTTPS URL (jpg/png, 2×, alt text) — no base64 inlining, no webp/svg?
 - [ ] Tables for layout, all CSS inline, ≤600/640px wrapper, single-column on mobile?
 - [ ] Bulletproof button matching the brand's shape; ONE primary CTA, ≥48px tall?
 - [ ] Subject ≤50 chars + intentional preview text + alt text on every image?
