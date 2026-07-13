@@ -114,11 +114,14 @@ exit/suppression rules — but do **not** create or query the CLM yet. Note "res
 
 Structure first, build second. Work the emails in order, and within each email follow this sub-order:
 
-**5a. Blueprint (before any image or HTML).** Via the **`email-templates`** skill (Step 2.5), produce
-the per-email blueprint: section content map, **hero-text strategy** (bake text into image / live HTML
-text over a plain image / no overlay), per-slot image plan, a **dedup check** (hero text ≠ body text),
-and a **readability spec** for any text-on-image. For a journey, blueprint all emails together and check
-**no two reuse the same hero headline or treatment.**
+**5a. Blueprint (before any image or HTML).** Via the **`email-templates`** skill (Step 2.5), run the
+**guided 3-axis intake** with the user — **Emailer Type → Template Structure → Hero Image Structure →
+Image Source (AI-generate vs. user-provides)** — asking each axis the brief hasn't already pinned
+(almost always; see `email-templates/references/intake-questions.md`). That produces the per-email
+blueprint: section content map, **hero-text strategy** (bake into image / live HTML over a plain image
+/ no overlay), per-slot image plan, a **dedup check** (hero text ≠ body text), and a **readability
+spec** for any text-on-image. For a journey, run the intake **once for the set** and blueprint all
+emails together — check **no two reuse the same structure, hero headline, or hero treatment.**
 → **Gate:** review the blueprint(s) with the user and get sign-off. Do not proceed until approved.
 
 **5b. Images.** Only after blueprint approval, run the image pipeline (Step 6) — invoke the installed

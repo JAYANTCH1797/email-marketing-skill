@@ -44,10 +44,22 @@ the brand font only in the Outlook fallback stack.
 Everything downstream reads from this brand kit. The named fonts/colors in the recipes are
 **genre fallbacks** for tokens the kit doesn't pin down — the brand kit always wins.
 
-## Step 2 — Classify the use case (each type carries an image pipeline)
+## Step 2 — Classify the emailer type (axis 1 of 3)
 
-Pick the type. Each one comes with a default **image pipeline** — what imagery it needs and how the
-hero is built. This is a contract, not a suggestion: it drives Step 2.5 and Step 6.
+Every email is designed across **three axes**, decided in order — each with an exhaustive reference
+and a guided question (Step 2.5):
+
+1. **Emailer Type** — *what kind of email is this?* → `references/email-types.md` (genre × occasion)
+2. **Template Structure** — *what is the body skeleton?* → `references/template-structures.md`
+3. **Hero Image Structure** — *the top moment + how image & text combine?* → `references/layout-patterns.md`
+   - plus **Image Source** — *AI-generated vs. user-provided vs. none?*
+
+**Start here:** detect the emailer type. It's the spine — it seeds the recommended structure, hero,
+and image source for the other axes. The full taxonomy (8 genres × all occasions, each mapped to its
+defaults) is in **`references/email-types.md`**; read it to place the email.
+
+The six recipes below are the **genre quick-map** (the detailed per-occasion rows + their defaults
+live in `email-types.md`). When unsure, use **Default Editorial** / `default-editorial`.
 
 | Campaign type / description | Recipe | Needs hero | Default hero mode | Lifestyle imgs | Max images |
 |---|---|---|---|---|---|
@@ -57,8 +69,6 @@ hero is built. This is a contract, not a suggestion: it drives Step 2.5 and Step
 | protein, supplement, nutrition, wellness D2C | **D2C Supplement** | yes | `overlay-text` | yes | 1–3 |
 | order confirmation, receipt, shipping, account email | **Transactional** | **no** | `none` | no | 0 |
 | welcome, newsletter, general, anything else | **Default Editorial** | yes | `standard-photo` | no | 1 |
-
-When unsure, use **Default Editorial**.
 
 ### Hero mode glossary
 
@@ -70,36 +80,55 @@ When unsure, use **Default Editorial**.
 The default hero mode is a starting point — the **blueprint (Step 2.5)** can override it (e.g. switch
 `overlay-text` → `standard-photo` for accessibility/localization). Decide there, with the user, before building.
 
-## Step 2.5 — Email blueprint (decide & review BEFORE you build)
+## Step 2.5 — Guided 3-axis intake → blueprint (decide & review BEFORE you build)
 
 **Do not generate any image or write any HTML until this blueprint is approved by the user.**
 Structure first; build second. This is what prevents the two classic failures: the hero headline
 **repeating** body copy, and **unreadable text** dropped onto a busy image.
 
-### Pick the hero archetype first
+### Run the guided 3-axis intake
 
-Read **`references/layout-patterns.md`** (in this skill's directory — the researched archetype library). Then:
-1. **Auto-pick** the starting archetype from the **Genre → default archetype map** for this brand's genre + use case.
-2. **Confirm or override** with the user — present it as a *named* choice with a one-line description and the 2–3 alternates from that row (full menu if they ask). E.g. "Hero = `text-over-image` (photo with overlaid headline + CTA below); alternates `product-cutout`, `color-block`." This is the natural spot for an `AskUserQuestion`.
-3. **Research fallback:** if nothing in the menu genuinely fits (a genre/treatment the library doesn't cover), invoke the **`email-structure-researcher`** agent to derive a structure, review it with the user, and **append it to `references/layout-patterns.md`** so it's reused next time.
+Read **`references/intake-questions.md`** (the canonical question set) and walk the user through the
+axes **one at a time** — a separate `AskUserQuestion` per axis, each pre-seeded with the recommended
+default from the emailer type:
 
-The chosen archetype fixes the hero's image strategy and text-handling (below). Apply the reference's **Build & image guardrails** to every image — no exceptions.
+- **A. Emailer Type** — confirm the detected type (seeds B–D). → `references/email-types.md`
+- **B. Template Structure** — pick the body skeleton + alternates. → `references/template-structures.md`
+- **C. Hero Image Structure** — pick the archetype **and** the text strategy A/B/C. → `references/layout-patterns.md`
+- **D. Image Source** — **AI-generate · user-provides · mix · none.**
 
-Produce this blueprint and get a thumbs-up:
+**Ask rule:** ask every axis the user hasn't already pinned. Only skip an axis when an installed
+brand/design-system skill fixes it, the user stated it explicitly, or it's pure-transactional
+(structure + hero fixed) — see `intake-questions.md` → "When to ask". In practice you ask almost
+always. **Never silently choose structure or hero for a marketing email.**
+
+**Research fallback:** if no archetype/structure in the references genuinely fits, invoke the
+**`email-structure-researcher`** agent to derive one, review it with the user, and **append it to the
+references** (`layout-patterns.md` + `template-structures.md` + a row in `email-types.md`) so it's
+reused next time.
+
+Apply the reference's **Build & image guardrails** to every image — no exceptions.
+
+### Lock copy, then produce the blueprint and get a thumbs-up
+
+Decide the headline + every body line **before** generating images (so the hero never duplicates body
+copy and, for strategy A, the baked text matches). Then assemble:
 
 ```
 EMAIL BLUEPRINT — {email name}
-  Type / recipe:   {from Step 2}
+  Emailer type:    {genre · occasion — from email-types.md}
+  Template struct: {named key from template-structures.md, e.g. ecom-sale-standard}
   Hero archetype:  {key from layout-patterns.md, e.g. text-over-image}
-  Section map:     (each section = ONE job; no text appears in two places)
+  Section map:     (walk the structure's block sequence; each section = ONE job; no repeated text)
     1. Header      — logo
     2. Hero        — {headline text} · {hero mode: overlay-text | standard-photo | none}
     3. {sub/body}  — {what copy lives here — must NOT restate the hero headline}
     4. {grid/feature/benefits} — {…}
     5. CTA         — {button text} → {destination}
     6. Footer      — unsubscribe + address
-  Hero strategy:   {A | B | C — see decision tree}
-  Image plan:      per slot → source + spec (see below)
+  Hero strategy:   {A bake-in | B live-over | C below — see table}
+  Image source:    {generate | user-asset | mix | none}  (per slot if mixed)
+  Image plan:      per slot → source + spec (see Step 6)
   Dedup check:     {confirm hero text ≠ any body text}
   Readability:     {for baked/overlay text: zone, scrim, max words, min size}
 ```
