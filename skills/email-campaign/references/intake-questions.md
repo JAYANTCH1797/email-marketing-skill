@@ -31,7 +31,7 @@ email. When in doubt, ask. (Detecting the *type* to seed defaults is fine and ex
 ```
 detect type ─▶ A. confirm Emailer Type ─▶ B. choose Template Structure
             ─▶ C. choose Hero Image Structure ─▶ D. choose Image Source
-            ─▶ lock copy ─▶ assemble the BLUEPRINT (SKILL Step 2.5) ─▶ get sign-off ─▶ build
+            ─▶ lock copy ─▶ assemble the BLUEPRINT (email-design.md Step 2.5) ─▶ get sign-off ─▶ build
 ```
 
 Run A→D as four short, sequential `AskUserQuestion` rounds (not one mega-screen) so each choice is
@@ -111,7 +111,7 @@ Rules that follow from the choice:
 - **Real assets beat generated** for any product the user actually sells, and are **mandatory** for transactional / travel / fintech (real catalog/property photos or none — never generated lifestyle, which erodes trust + trips spam).
 - **Strategy A (baked text)** requires **Generate** (or Mix where the hero is generated) — you can't reliably bake legible text onto a user photo without an editing pass.
 - For **Strategy B** over a user-provided photo, confirm it has a usable empty safe-zone + contrast; if not, edit one in or fall back to C.
-- Every image — generated or provided — ends as a **hosted HTTPS URL** (SKILL Step 6 "Hosting"); never inline base64.
+- Every image — generated or provided — ends as a **hosted HTTPS URL** (email-design.md Step 6 "Hosting"); never inline base64.
 
 ## Lock copy before generating (gate between D and the blueprint)
 
@@ -121,7 +121,7 @@ Decide the **headline and every body line** before generating any image — so:
 
 ## Then: assemble the blueprint and get sign-off
 
-Feed all four answers into the **EMAIL BLUEPRINT** (SKILL Step 2.5) — type / structure / hero +
+Feed all four answers into the **EMAIL BLUEPRINT** (email-design.md Step 2.5) — type / structure / hero +
 text strategy / image plan per slot / dedup check / readability spec — and **get explicit approval
 before building.** For journeys, blueprint all emails together and vary structure + hero per email.
 

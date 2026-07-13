@@ -1,6 +1,6 @@
 ---
 name: brand-kit-extractor
-description: "Extract a brand's visual design system from its website into a structured brand kit (logo, colors, fonts, button style, imagery style, voice). Use when an email needs to be on-brand and there is NO installed design-system skill for that brand. Invoked by the email-templates skill. Runs in an isolated context so noisy page markup never reaches the main conversation — returns only the clean brand kit."
+description: "Extract a brand's visual design system from its website into a structured brand kit (logo, colors, fonts, button style, imagery style, voice). Use when an email needs to be on-brand and there is NO installed design-system skill for that brand. Invoked by the email-marketing skill. Runs in an isolated context so noisy page markup never reaches the main conversation — returns only the clean brand kit."
 tools: WebFetch, WebSearch
 model: sonnet
 ---

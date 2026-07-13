@@ -13,4 +13,4 @@ Begin at Phase 1 (Intake). Honor the skill's core principles — especially:
 - **Never auto-send** — create drafts/paused flows only, and confirm recipient count + audience before any send.
 
 If the request is clearly a single email to *design only* (not deliver), offer the fast path:
-hand straight to the **email-templates** skill and stop.
+follow the design reference `references/email-design.md` and stop.

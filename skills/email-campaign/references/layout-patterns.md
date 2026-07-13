@@ -1,6 +1,6 @@
 # Email layout patterns — archetype library
 
-> Derived from a multi-genre research pass. This is the **pattern language** the blueprint (email-templates Step 2.5) selects from. Loaded on demand — read it when choosing a hero/structure.
+> Derived from a multi-genre research pass. This is the **pattern language** the blueprint (email-design.md Step 2.5) selects from. Loaded on demand — read it when choosing a hero/structure.
 
 **How to use:** in the blueprint, (1) look up the genre+use-case in *Genre defaults* for the starting archetype, (2) confirm/override with the user from the *Hero archetypes* menu, (3) compose the body from *Section blocks*, (4) apply *Build & image guardrails* to everything. Archetypes are ordered **most-reliable → highest-risk** — default to the safe one; reach for VML-dependent overlays only when the genre needs atmosphere.
 

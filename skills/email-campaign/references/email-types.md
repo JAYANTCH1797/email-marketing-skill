@@ -1,6 +1,6 @@
 # Emailer types — the taxonomy spine
 
-> The **first axis** of the 3-axis design system (email-templates Step 2). An *emailer type* =
+> The **first axis** of the 3-axis design system (email-design.md Step 2). An *emailer type* =
 > **genre × occasion**. Every type carries **defaults for the other two axes** — a template
 > structure (`references/template-structures.md`) and a hero image structure
 > (`references/layout-patterns.md`) — plus a default image-source recommendation.
@@ -17,7 +17,7 @@
 | **1. Emailer Type** | *What kind of email is this?* | this file | genre × occasion (below) |
 | **2. Template Structure** | *What is the body skeleton?* | `template-structures.md` | named section-block sequences |
 | **3. Hero Image Structure** | *What is the top moment + how do image & text combine?* | `layout-patterns.md` | 9 core + 6 extended archetypes; text strategies A/B/C |
-| **+ Image Source** | *AI-generated, user-provided, or none?* | this file + SKILL Step 6 | generate · user-asset · mix · CSS-only |
+| **+ Image Source** | *AI-generated, user-provided, or none?* | this file + email-design.md Step 6 | generate · user-asset · mix · CSS-only |
 
 ## Hero-text strategy legend (used in every table below)
 
