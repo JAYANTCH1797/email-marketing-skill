@@ -77,8 +77,11 @@ live in `email-types.md`). When unsure, use **Default Editorial** / `default-edi
 - **`illustration`** — flat illustration or UI mockup, **no photography/people** (SaaS/tech).
 - **`none`** — no hero image; the hero is built in HTML/CSS (transactional).
 
-The default hero mode is a starting point — the **blueprint (Step 2.5)** can override it (e.g. switch
-`overlay-text` → `standard-photo` for accessibility/localization). Decide there, with the user, before building.
+**These four modes are shorthand** for the full hero menu in `references/layout-patterns.md`. The
+canonical vocabulary is **archetype + text strategy** (chosen in Step 2.5); the modes map to it:
+`standard-photo` → `image-only` (strategy C) · `overlay-text` → `text-over-image` (B) or `baked-art` (A) ·
+`illustration` → `illustrated-banner` · `none` → `color-block`/`status-card`/`text-only` (CSS).
+The default is a starting point — the **blueprint (Step 2.5)** picks the precise archetype + strategy, and can override it (e.g. `overlay-text` → `image-only` for accessibility/localization).
 
 ## Step 2.5 — Guided 3-axis intake → blueprint (decide & review BEFORE you build)
 
@@ -121,7 +124,7 @@ EMAIL BLUEPRINT — {email name}
   Hero archetype:  {key from layout-patterns.md, e.g. text-over-image}
   Section map:     (walk the structure's block sequence; each section = ONE job; no repeated text)
     1. Header      — logo
-    2. Hero        — {headline text} · {hero mode: overlay-text | standard-photo | none}
+    2. Hero        — {headline text} · treatment = the Hero archetype + strategy chosen above
     3. {sub/body}  — {what copy lives here — must NOT restate the hero headline}
     4. {grid/feature/benefits} — {…}
     5. CTA         — {button text} → {destination}
@@ -264,7 +267,12 @@ CTA rules: 200–300px wide (full-width only when the recipe says so), action ve
 - Image-to-text ratio ≤40% images / ≥60% text; alt text on all images.
 - Unsubscribe link in footer; real reply-to.
 
-## Step 5 — Use-case recipes
+## Step 5 — Use-case recipes (per-genre styling)
+
+These six recipes are the **styling/voice** layer — palette, type pairing, rhythm per genre. They are
+orthogonal to the axes: the **block order** comes from the chosen `template-structures.md` key, the
+**hero** from `layout-patterns.md`. *Recipe = how it feels; structure = which blocks, in what order.*
+Match the recipe to the emailer type's genre.
 
 Pull colors / fonts / logo / button shape from the **brand kit** first. The named fonts/colors are
 genre fallbacks. For copy, use the brief's headline/CTA verbatim where provided.
