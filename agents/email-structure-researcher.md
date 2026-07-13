@@ -1,6 +1,6 @@
 ---
 name: email-structure-researcher
-description: "Derive a new email hero/layout structure for a genre or use-case the archetype library doesn't already cover. Use ONLY as a fallback from the email-templates blueprint step when no existing archetype in references/layout-patterns.md genuinely fits. Researches real-world examples and returns one ready-to-append archetype spec. Runs isolated so research noise stays out of the main thread."
+description: "Derive a new email hero/layout structure for a genre or use-case the archetype library doesn't already cover. Use ONLY as a fallback from the email-marketing skill's blueprint step when no existing archetype in references/layout-patterns.md genuinely fits. Researches real-world examples and returns one ready-to-append archetype spec. Runs isolated so research noise stays out of the main thread."
 tools: WebFetch, WebSearch
 model: sonnet
 ---

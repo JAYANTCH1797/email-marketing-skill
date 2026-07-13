@@ -1,5 +1,5 @@
 ---
-name: email-templates
+name: email-design
 description: "Build production HTML email templates for any brand and use case. Resolves the brand's design system first (installed brand/design-system skill, else the brand-kit-extractor agent scrapes the brand's website), then applies a universal quality baseline plus a use-case recipe (ecommerce sale, SaaS launch, consumer hardware, D2C supplement, transactional, or default editorial) to produce agency-grade, Outlook-safe HTML. Use for: building/designing a single email template, generating campaign HTML, coding a branded email, hero/promo/launch/receipt/welcome emails. Triggers: build email template, design an email, create email HTML, email template for, branded email, sale email, product launch email, order confirmation email, welcome email, newsletter template, transactional email."
 ---
 
@@ -240,7 +240,7 @@ when the archetype/brand calls for it — and then keep page slightly darker tha
 Header and footer are usually standardized per brand and already exist in their email tool. **Before
 building either from scratch, check for an existing brand template in the connected CLM and lift its
 header + footer** (logo lockup, nav, social row, legal/address/unsubscribe). For Klaviyo this is
-`list_email_templates` → `get_email_template`; see `../email-campaign/references/klaviyo.md`. Only
+`list_email_templates` → `get_email_template`; see `references/klaviyo.md`. Only
 compose new ones from the brand kit when no existing template is available.
 
 ### Bulletproof button (Outlook-safe) — fill with the brand accent + brand button shape

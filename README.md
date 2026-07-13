@@ -8,26 +8,32 @@ connected (Klaviyo, Mailchimp, HubSpot, or any email MCP). Tool-agnostic over th
 
 | Component | File | Role |
 |---|---|---|
-| **email-campaign** skill | `skills/email-campaign/SKILL.md` | The front door / orchestrator — owns the full lifecycle, brief → CLM |
-| **email-templates** skill | `skills/email-templates/SKILL.md` | Designs a single on-brand, Outlook-safe HTML email (6 use-case recipes) |
+| **email-campaign** skill (the one skill) | `skills/email-campaign/SKILL.md` | The front door / orchestrator — owns the full lifecycle, brief → design → CLM |
+| **email-design** reference | `skills/email-campaign/references/email-design.md` | The design engine (brand kit, 3-axis intake, 6 recipes, image pipeline), loaded at the design phase |
+| 3-axis references | `.../references/{email-types,template-structures,layout-patterns,intake-questions}.md` | Emailer type · template structure · hero archetype library · guided intake |
+| Klaviyo reference | `.../references/klaviyo.md` | Concrete Phase-7 delivery playbook |
 | **brand-kit-extractor** agent | `agents/brand-kit-extractor.md` | Scrapes a brand site → structured brand kit (isolated context) |
 | **copy-critic** agent | `agents/copy-critic.md` | Independent copy review/rewrite + subject A/B variants |
+| **email-structure-researcher** agent | `agents/email-structure-researcher.md` | Derives a new hero/structure when the library doesn't cover the case |
 | **/email-campaign** command | `commands/email-campaign.md` | Entry point that kicks off the workflow |
 | **send-guard** hook | `hooks/hooks.json` | Forces a confirmation prompt on send/activate tool calls |
+
+> **One skill, references for depth.** The plugin exposes a **single skill** (`email-campaign`); everything else is a reference it loads on demand (progressive disclosure) or an agent it invokes.
 
 ## How it composes (lazy, one source of truth per capability)
 
 ```
-/email-campaign ─▶ email-campaign skill (process)
-                      │  Phase 5 design  ─▶ email-templates skill
+/email-campaign ─▶ email-campaign skill (the whole lifecycle)
+                      │  Phase 5 design  ─▶ references/email-design.md (3-axis intake → blueprint → build)
                       │                        └─ brand kit ─▶ brand-kit-extractor agent
                       │                        └─ imagery   ─▶ image-generation skill (companion)
+                      │                        └─ new structure ─▶ email-structure-researcher agent
                       │  Phase 6 copy    ─▶ copy-critic agent
                       └─ Phase 7 deliver ─▶ connected CLM MCP (drafts only)
 ```
 
 - **email-campaign** is brand-agnostic until the design phase, and defers all CLM/MCP calls to the end.
-- **email-templates** resolves the brand kit lazily: installed `*-design-system` skill → `brand-kit-extractor` agent (scrape) → ask.
+- The **email-design** reference resolves the brand kit lazily: installed `*-design-system` skill → `brand-kit-extractor` agent (scrape) → ask.
 - Brand-specific design systems (e.g. an `inito-design-system` skill) live **outside** this plugin and are auto-discovered.
 
 ## Companion skills (recommended, not bundled)
@@ -69,11 +75,11 @@ Once installed, start from the command — or just describe what you want:
 The **email-campaign** skill drives the flow:
 
 1. **Intake** — answers a few questions (or reads your brief). For a single email you just want
-   *designed* (not delivered), it offers a fast path straight to **email-templates**.
+   *designed* (not delivered), it offers a fast path straight to the design engine.
 2. **One-shot vs. journey** — single broadcast, or a triggered multi-email sequence.
 3. **Brief** — a short written brief you approve.
 4. **Structure** — the one-shot plan or the full journey map (sign-off gate).
-5. **Design** — each email built on-brand via **email-templates** (brand kit resolved by the
+5. **Design** — each email built on-brand via `references/email-design.md` (brand kit resolved by the
    **brand-kit-extractor** agent, or an installed `*-design-system` skill).
 6. **Copy** — the **copy-critic** agent tightens copy and proposes subject A/B variants.
 7. **Deliver** — drafts created in your connected CLM (Klaviyo / Mailchimp / HubSpot / any email MCP).

@@ -9,8 +9,8 @@ Orchestrate a marketing email campaign from brief to a draft sitting in the user
 ready for their final review. This skill owns the **process**; it delegates the **craft** to
 companion components and the **delivery** to whatever CLM MCP is connected.
 
-- **Brand kit** (when the design phase needs it) → the `email-templates` skill, which uses the `brand-kit-extractor` agent.
-- **Design** of each email → the `email-templates` skill.
+- **Brand kit** (when the design phase needs it) → the design reference `references/email-design.md`, which uses the `brand-kit-extractor` agent.
+- **Design** of each email → the design reference `references/email-design.md`.
 - **Imagery** → the image-generation skill.
 - **Copy review** → the `copy-critic` agent.
 - **Delivery** → the connected email CLM MCP.
@@ -46,7 +46,7 @@ If a component or MCP isn't available, degrade gracefully (noted per phase) — 
 This skill is the plugin's front door. First, read intent:
 
 - **Single email, design only** (e.g. "build/design a welcome email") → offer the **fast path**:
-  hand straight to the `email-templates` skill, produce the HTML, and stop. No brief, no MCP.
+  follow the design reference `references/email-design.md`, produce the HTML, and stop. No brief, no MCP.
 - **A campaign / journey, or anything to be delivered** ("create / set up / send / launch", "in
   Klaviyo", "series/flow") → run the full workflow below.
 
@@ -114,10 +114,10 @@ exit/suppression rules — but do **not** create or query the CLM yet. Note "res
 
 Structure first, build second. Work the emails in order, and within each email follow this sub-order:
 
-**5a. Blueprint (before any image or HTML).** Via the **`email-templates`** skill (Step 2.5), run the
+**5a. Blueprint (before any image or HTML).** Following the design reference **`references/email-design.md`** (its Step 2.5), run the
 **guided 3-axis intake** with the user — **Emailer Type → Template Structure → Hero Image Structure →
 Image Source (AI-generate vs. user-provides)** — asking each axis the brief hasn't already pinned
-(almost always; see `email-templates/references/intake-questions.md`). That produces the per-email
+(almost always; see `references/intake-questions.md`). That produces the per-email
 blueprint: section content map, **hero-text strategy** (bake into image / live HTML over a plain image
 / no overlay), per-slot image plan, a **dedup check** (hero text ≠ body text), and a **readability
 spec** for any text-on-image. For a journey, run the intake **once for the set** and blueprint all
@@ -128,8 +128,7 @@ emails together — check **no two reuse the same structure, hero headline, or h
 **image-generation skill** with the brand kit + the chosen hero mode/spec. Generate after copy is locked
 so baked text matches the final headline. Reuse one brand kit across the whole journey.
 
-**5c. Build HTML.** Via `email-templates`, produce the production HTML using the approved blueprint and
-images. (If `email-templates` isn't installed, fall back to Outlook-safe, inline-CSS, 600px table HTML, and say so.)
+**5c. Build HTML.** Following `references/email-design.md`, produce the production HTML using the approved blueprint and images.
 
 → **Gate:** show each finished email (or a batch) for approval. Nothing reaches the CLM yet.
 

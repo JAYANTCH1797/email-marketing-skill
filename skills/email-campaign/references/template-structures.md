@@ -236,6 +236,6 @@ Use when no type row fits. Clean editorial photo, no text overlay, live HTML hea
 
 ## Composing & extending
 
-- **Walk the sequence top-to-bottom**, instantiating each block per `layout-patterns.md` build rules, applying the universal baseline (SKILL Step 3) and brand kit.
-- **Journeys:** vary the structure *and* hero across emails — never reuse the same skeleton + hero headline back-to-back (SKILL Step 2.5 cross-email check).
+- **Walk the sequence top-to-bottom**, instantiating each block per `layout-patterns.md` build rules, applying the universal baseline (email-design.md Step 3) and brand kit.
+- **Journeys:** vary the structure *and* hero across emails — never reuse the same skeleton + hero headline back-to-back (email-design.md Step 2.5 cross-email check).
 - **New structure needed?** Derive it during the guided intake (via `email-structure-researcher` for the hero), then add the named structure here, its row in `email-types.md`, and the archetype/blocks in `layout-patterns.md`. Keep all three in sync.
