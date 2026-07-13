@@ -13,30 +13,39 @@
 > Implemented as **separate `AskUserQuestion` rounds** (guided per-axis), each pre-seeded with the
 > recommended default from the type taxonomy so the user confirms or overrides with full context.
 
-## When to ask (the ask rule)
+## The ask rule — confidence-gated (infer on strong signal, ask on weak)
 
-**Ask the axes whenever the user has NOT provided design guidelines.** In practice this is *almost
-always* — only skip an axis when its answer is genuinely pinned, namely:
+Decide **per axis** — messaging tone, Emailer Type, Template Structure, Hero, Image Source. For each:
 
-- An **installed brand / design-system skill** (e.g. `*-design-system`) fixes structure/hero conventions, **or**
-- The user **explicitly stated** the choice ("use a plain text-only welcome", "no images", "use our sale template"), **or**
-- The type is **unambiguously transactional** (receipt/OTP/shipping) — structure + hero are fixed by the trust genre; still confirm the image-source = none and the facts.
+1. **Explicit in the brief, OR a high-confidence inference** → use it, but **declare the assumption in one line** so the user can veto it (e.g. `assumed tone: aspirational — say if you'd prefer otherwise`). Inference is never *silent* — every inferred creative decision is surfaced in the brief/blueprint playback as an `assumed: …` line.
+2. **Silent or only weakly hinted** → **ask.** A short `AskUserQuestion` with 2–3 real options and **your recommended one first, labelled "(Recommended)"**, each with a one-line reason. Never guess on a weak signal.
 
-If none of those apply to an axis, **ask it.** Never silently pick structure or hero for a marketing
-email. When in doubt, ask. (Detecting the *type* to seed defaults is fine and expected — but still
-**confirm** it in Step A.)
+**"Weak signal"** = you're essentially guessing, or two-plus options are equally plausible and nothing in the brief/brand breaks the tie. That is exactly when a recommended-option question beats a silent pick. A missing answer is never filled by a silent default.
+
+**Fail-closed:** do **not** generate any image or HTML until every axis *and* the messaging tone is resolved — either inferred-and-declared, or asked-and-answered. A blueprint with an un-declared, un-asked creative decision is **not** ready to build.
+
+**High-confidence shortcuts** (infer + declare, don't ask):
+- An installed brand/design-system skill fixes structure/hero/colors → infer from it.
+- The user explicitly stated the choice ("plain text-only welcome", "no images", "use our sale template").
+- Unambiguously transactional (receipt/OTP/shipping) → structure + hero fixed by the trust genre; still confirm image-source = none and the facts.
 
 ## Sequencing
 
 ```
-detect type ─▶ A. confirm Emailer Type ─▶ B. choose Template Structure
-            ─▶ C. choose Hero Image Structure ─▶ D. choose Image Source
-            ─▶ lock copy ─▶ assemble the BLUEPRINT (email-design.md Step 2.5) ─▶ get sign-off ─▶ build
+0. Messaging (the one thing to land + tone/angle)
+   ─▶ detect type ─▶ A. confirm Emailer Type ─▶ B. choose Template Structure
+   ─▶ C. choose Hero Image Structure ─▶ D. choose Image Source
+   ─▶ lock copy ─▶ assemble the BLUEPRINT (email-design.md Step 2.5) ─▶ get sign-off ─▶ build
 ```
 
-Run A→D as four short, sequential `AskUserQuestion` rounds (not one mega-screen) so each choice is
-made with the previous ones visible. Every round: **recommended option first, labelled "(Recommended)"**,
-2–3 real alternates from the references, and the implicit "Other" for a free-text answer.
+Run 0→D as short, sequential `AskUserQuestion` rounds (not one mega-screen) so each choice is made
+with the previous ones visible — but **only ask the ones that are weak-signal** (per the ask rule
+above); infer-and-declare the strong ones. Every round asked: **recommended option first, labelled
+"(Recommended)"**, 2–3 real alternates from the references, and the implicit "Other" for free text.
+
+**Step 0 — Messaging & tone.** Before any axis: what's the ONE thing this email must land, and in
+what tone (aspirational / urgent / warm / premium / playful / plain)? Infer + declare if the brief or
+brand voice makes it obvious; ask with a recommended tone if not. This seeds the copy and the hero.
 
 ---
 

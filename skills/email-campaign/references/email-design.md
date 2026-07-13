@@ -141,6 +141,12 @@ EMAIL BLUEPRINT — {email name}
 This is the *text* axis of the chosen archetype (e.g. `text-over-image` → A or B; `image-only` → C;
 `baked-art` → A). It's the readability decision the user must see:
 
+> **Hero = ONE text element.** A text+image hero carries a *single* piece of text — the headline
+> (optionally a small eyebrow/kicker above it). The **subhead, body copy, and CTA live in the section
+> BELOW the hero — never stacked inside it.** If you're putting headline + subhead + button in the
+> hero, that's a content section, not a hero: keep only the headline, move the rest down. This is
+> *how much* text the hero holds; the A/B/C table below is *where* that one headline sits.
+
 | | Strategy | How text is handled | Use when | Cost / risk |
 |---|---|---|---|---|
 | **A** | **Bake text into the image** (`overlay-text`) | Headline is rendered INTO the generated image by the image-gen skill | Art-directed D2C/fashion/ecommerce lifestyle; you control generation | Not editable/translatable, not selectable text, must verify legibility; **no `<h1>` repeating it in HTML** |

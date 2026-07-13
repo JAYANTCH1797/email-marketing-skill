@@ -52,15 +52,18 @@ This skill is the plugin's front door. First, read intent:
 
 If intent is ambiguous, ask which they want before proceeding.
 
-For the full workflow, interview the user — ask only what you can't infer, in one batched round:
+For the full workflow, gather these under the **confidence-gated ask rule** (`references/intake-questions.md`):
+if a field is explicit in the brief or a high-confidence inference, **infer it and declare the assumption**;
+if it's silent or only weakly hinted, **ask with a recommended option** — never silently guess a creative call.
 
 - **Goal** — what should this achieve? (sales, signups, re-engagement, onboarding, announcement) + the **one metric** for success.
 - **Audience** — existing list/segment, or a condition ("trialed but didn't convert")? Rough size if known.
 - **Brand / product** — the brand's website URL (pointer for the design phase) and what's being promoted.
 - **Offer / message** — the core thing to say.
+- **Messaging & tone** — the ONE thing this email must land + the voice (aspirational / urgent / warm / premium / playful / plain). Infer + declare from brand voice if obvious; ask with a recommended tone if not.
 - **Constraints** — deadline/send window, sender name & reply-to, legal/medical review needs, frequency caps.
 
-→ **Gate:** play back a one-paragraph summary; confirm.
+→ **Gate:** play back a one-paragraph summary **with every inference shown as an `assumed: …` line**; confirm.
 
 ### Phase 2 — One-shot or journey?
 
@@ -115,9 +118,13 @@ exit/suppression rules — but do **not** create or query the CLM yet. Note "res
 Structure first, build second. Work the emails in order, and within each email follow this sub-order:
 
 **5a. Blueprint (before any image or HTML).** Following the design reference **`references/email-design.md`** (its Step 2.5), run the
-**guided 3-axis intake** with the user — **Emailer Type → Template Structure → Hero Image Structure →
-Image Source (AI-generate vs. user-provides)** — asking each axis the brief hasn't already pinned
-(almost always; see `references/intake-questions.md`). That produces the per-email
+**guided intake** with the user — **Messaging/tone → Emailer Type → Template Structure → Hero Image Structure →
+Image Source (AI-generate vs. user-provides)** — under the **confidence-gated ask rule** (`references/intake-questions.md`):
+**infer + declare** an axis only when the brief is explicit or you're highly confident; otherwise **ask with 2–3
+options and a recommended one**. Never silently pick a creative axis on a weak signal. **Fail-closed: do not
+generate any image or write any HTML until every axis is resolved** (inferred-and-declared or asked-and-answered).
+The hero question always **offers concrete variations** (e.g. split / image-only / text-over-image), and the hero
+carries **one text element** — subhead + CTA go below it, never stacked in the hero. That produces the per-email
 blueprint: section content map, **hero-text strategy** (bake into image / live HTML over a plain image
 / no overlay), per-slot image plan, a **dedup check** (hero text ≠ body text), and a **readability
 spec** for any text-on-image. For a journey, run the intake **once for the set** and blueprint all
